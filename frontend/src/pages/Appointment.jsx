@@ -2,6 +2,7 @@ import React, {useContext, useState, useEffect} from 'react'
 import { useParams } from 'react-router-dom'
 import { AppContext } from '../context/AppContext'
 import { assets } from '../assets/assets'
+import RelatedDoctors from '../components/RelatedDoctors'
 
 const Appointment = () => {
 
@@ -31,8 +32,7 @@ const Appointment = () => {
       currentDate.setDate(today.getDate()+i)
 
       // setting end time of the date with index
-      let endTime = new Date()
-      endTime.setDate(today.getDate()+i)
+      let endTime = new Date(currentDate)
       endTime.setHours(21,0,0,0)
 
       // setting hours
@@ -113,7 +113,10 @@ const Appointment = () => {
               docSlots.length > 0 && docSlots.map((item, index) => (
               <div
                 key={index}
-                onClick={() => setSlotIndex(index)}
+                onClick={() =>{ 
+                  setSlotIndex(index)
+                  setSloteTime('')
+                }}
                 className={`text-center py-6 min-w-16 rounded-full cursor-pointer 
                 ${slotIndex === index ? 'bg-primary text-white' : 'border border-gray-200'}`}>
                   <p>{item[0] && daysOfWeek[item[0].datetime.getDay()]}</p>
@@ -133,8 +136,18 @@ const Appointment = () => {
               ))
             }
           </div>
-          <button className='bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6'>Book an appointment</button>
+          <button
+  disabled={!slotTime}
+  className={`text-sm font-light px-14 py-3 rounded-full my-6
+  ${slotTime ? 'bg-primary text-white' : 'bg-gray-300 cursor-not-allowed'}`}
+>
+  Book an appointment
+</button>
+
         </div>
+
+        {/* Listing Related Doctors */}
+        <RelatedDoctors docId={docId} speciality={docInfo.speciality} />
     </div>
   )
 }
