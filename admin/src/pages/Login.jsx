@@ -1,11 +1,46 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { AdminContext } from '../context/AdminContext';
+import {assets} from '../assets/assets';
+import axios from 'axios';
+import {toast} from 'react-toastify';
 
 const Login = () => {
 
-  const [state, setState] = useState('Admin')
+  const [state, setState] = useState('Admin');
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const {setAToken, backendUrl} = useContext(AdminContext);
+
+  const onSubmitHandler = async (event) => {
+
+    event.preventDefault()
+
+    try {
+
+      if(state === 'Admin') {
+
+        const {data} = await axios.post(backendUrl + '/api/admin/login', {email,password});
+        if(data.success) {
+          localStorage.setItem('aToken', data.token)
+          setAToken(data.token)
+        } else {
+          toast.error(data.message)
+        }
+
+      } else {
+
+      }
+
+    } catch(error) {
+
+    }
+
+  }
 
   return (
-    <form className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50">
+    <form onSubmit={onSubmitHandler} className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50">
 
       <div className="flex flex-col gap-4 p-8 w-[340px] sm:w-[380px] bg-white/90 backdrop-blur border border-gray-200 rounded-2xl shadow-xl">
 
@@ -15,7 +50,7 @@ const Login = () => {
 
         <div className="w-full">
           <label className="text-sm font-medium">Email</label>
-          <input
+          <input onChange={(e)=>setEmail(e.target.value)} value={email}
             type="email"
             required
             placeholder={
@@ -31,7 +66,7 @@ const Login = () => {
 
         <div className="w-full">
           <label className="text-sm font-medium">Password</label>
-          <input
+          <input onChange={(e)=>setPassword(e.target.value)} value={password}
             type="password"
             required
             placeholder="••••••••"
