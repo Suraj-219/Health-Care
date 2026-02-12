@@ -1,18 +1,22 @@
 import React, { useContext } from 'react'
 import { assets } from '../assets/assets'
 import { AdminContext } from '../context/AdminContext'
+import {useNavigate} from 'react-router-dom'
 
 const Navbar = () => {
 
   const { aToken, setAToken } = useContext(AdminContext);
 
+  const navigate = useNavigate();
+
   const logout = () => {
+    navigate('/')
     aToken && setAToken('')
     aToken && localStorage.removeItem('aToken')
   }
 
   return (
-    <div className="flex justify-between items-center px-6 sm:px-12 py-4 bg-white shadow-sm border-b">
+    <div className="flex h-16 justify-between items-center px-6 sm:px-12 py-4 bg-white shadow-sm border-b">
 
       <div className="flex items-center gap-3">
         <img
