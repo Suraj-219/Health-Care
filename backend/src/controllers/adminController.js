@@ -148,7 +148,7 @@ const adminDashboard = async (req, res) => {
 
         const doctors = await doctorModel.find({})
         const users = await userModel.find({})
-        const appointments = await appointmentModel({})
+        const appointments = await appointmentModel.find({})
 
         const dashData = {
             doctors: doctors.length,
