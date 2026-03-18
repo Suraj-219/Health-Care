@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { assets } from '../assets/assets'
 import { AdminContext } from '../context/AdminContext'
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const Navbar = () => {
 
@@ -34,9 +34,9 @@ const Navbar = () => {
       <button
         onClick={logout}
         className="px-6 py-2 text-sm font-medium rounded-full 
-    bg-primary text-white shadow-md
-    hover:bg-primary/90 hover:shadow-lg
-    active:scale-95 transition-all duration-200"
+        bg-primary text-white shadow-md ease-in-out hover:scale-105
+        hover:bg-primary/90 hover:shadow-lg hover:shadow-lg
+        active:scale-95 transition-all duration-300"
       >
         Logout
       </button>
