@@ -25,12 +25,12 @@ app.use('/api/user',userRouter)
 app.get('/',(req, res)=>{
     res.send({
         activeStatus: true,
-        erros: false
+        error: false
     })
 })
 
-app.get('/', (req,res)=>{
-    res.send("API WORKING")
-})
+// app.get('/', (req,res)=>{
+//     res.send("API WORKING")
+// })
 
 app.listen(port, ()=> console.log("Server Started at:", port))
