@@ -10,19 +10,43 @@ import userRouter from './src/routes/userRoute.js'
 // app config
 const app = express()
 const port = process.env.PORT || 4000
-connectDB()
-connectCloudinary()
+
+let isInitialized = false
+
+// Initialize app (to be called before handling requests)
+export async function initializeApp() {
+    if (isInitialized) return
+    
+    try {
+        await connectDB()
+        connectCloudinary()
+        isInitialized = true
+    } catch (error) {
+        console.error('Failed to initialize app:', error)
+        throw error
+    }
+}
 
 // middilewares
 app.use(express.json())
 app.use(cors())
 
+// Initialize middleware - ensures connections before handling requests
+app.use(async (req, res, next) => {
+    try {
+        await initializeApp()
+        next()
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to initialize server' })
+    }
+})
+
 // api endpoints
 app.use('/api/admin', adminRouter);
-app.use('/api/doctor',doctorRouter);
-app.use('/api/user',userRouter)
+app.use('/api/doctor', doctorRouter);
+app.use('/api/user', userRouter)
 
-app.get('/',(req, res)=>{
+app.get('/', (req, res) => {
     res.send({
         activeStatus: true,
         error: false
@@ -31,7 +55,7 @@ app.get('/',(req, res)=>{
 
 // For local development
 if (process.env.NODE_ENV !== 'production') {
-    app.listen(port, ()=> console.log("Server Started at:", port))
+    app.listen(port, () => console.log("Server Started at:", port))
 }
 
 export default app
