@@ -53,6 +53,10 @@ app.get('/', (req, res) => {
     })
 })
 
+// app.get('/', (req,res)=>{
+//     res.send("API WORKING")
+// })
+
 app.use((err, req, res, next) => {
     console.error('Unhandled server error:', err)
     res.status(500).json({ error: 'Internal Server Error' })
