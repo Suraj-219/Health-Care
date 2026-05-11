@@ -19,7 +19,7 @@ export async function initializeApp() {
     
     try {
         await connectDB()
-        connectCloudinary()
+        await connectCloudinary()
         isInitialized = true
     } catch (error) {
         console.error('Failed to initialize app:', error)
@@ -51,6 +51,11 @@ app.get('/', (req, res) => {
         activeStatus: true,
         error: false
     })
+})
+
+app.use((err, req, res, next) => {
+    console.error('Unhandled server error:', err)
+    res.status(500).json({ error: 'Internal Server Error' })
 })
 
 // For local development
